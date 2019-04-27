@@ -1,0 +1,25 @@
+{
+  "name": "animalsdb",
+  "version": "1.0.0",
+  "description": "extinct, de-extinct, conserve, or exploit a list of animals hosted in an online database",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jepidoptera/AnimalsDB.git"
+  },
+  "author": "Peter Allen",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jepidoptera/AnimalsDB/issues"
+  },
+  "homepage": "https://github.com/jepidoptera/AnimalsDB#readme",
+  "dependencies": {
+    "express": "^4.16.4",
+    "express-handlebars": "^3.0.2",
+    "mysql": "^2.17.1"
+  }
+}
