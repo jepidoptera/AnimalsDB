@@ -1,7 +1,7 @@
 var mysql = require("mysql");
 // database hosted by Heroku
 var connection = 
-    process.env.JAWSDB_URL || 
+    mysql.createConnection(process.env.JAWSDB_URL) || 
     mysql.createConnection({
         host: "dyud5fa2qycz1o3v.cbetxkdyhwsb.us-east-1.rds.amazonaws.com",
         port: 3306,
