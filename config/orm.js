@@ -1,3 +1,5 @@
+// jshint esversion: 6
+
 var connection = require("./connection");
 
 // Helper function for SQL syntax.
@@ -20,19 +22,16 @@ function printQuestionMarks(num) {
     var arr = [];
   
     // loop through the keys and push the key/value as a string int arr
-    for (var key in ob) {
-      var value = ob[key];
-      // check to skip hidden properties
-      if (Object.hasOwnProperty.call(ob, key)) {
+    Object.keys(ob).forEach((key) => {
+        var value = ob[key];
         // if string with spaces, add quotations (Lana Del Grey => 'Lana Del Grey')
-        if (typeof value === "string" && value.indexOf(" ") >= 0) {
-          value = "'" + value + "'";
+        if (typeof value === "string") {
+            value = "'" + value + "'";
         }
         // e.g. {name: 'Lana Del Grey'} => ["name='Lana Del Grey'"]
         // e.g. {sleepy: true} => ["sleepy=true"]
         arr.push(key + "=" + value);
-      }
-    }
+    });
   
     // translate array of strings to a single comma-separated string
     return arr.toString();
@@ -42,13 +41,9 @@ function printQuestionMarks(num) {
   var orm = {
     all: function(tableInput, cb) {
       var queryString = "SELECT * FROM " + tableInput + ";";
-      connection.query(queryString, function(err, result) {
-        if (err) {
-          throw err;
-        }
-        cb(result);
-      });
+      orm.query(queryString, cb);
     },
+
     create: function(table, cols, vals, cb) {
       var queryString = "INSERT INTO " + table;
   
@@ -59,15 +54,7 @@ function printQuestionMarks(num) {
       queryString += printQuestionMarks(vals.length);
       queryString += ") ";
   
-      console.log(queryString);
-  
-      connection.query(queryString, vals, function(err, result) {
-        if (err) {
-          throw err;
-        }
-  
-        cb(result);
-      });
+      orm.query(queryString, cb);
     },
     // An example of objColVals would be {name: panther, sleepy: true}
     update: function(table, objColVals, condition, cb) {
@@ -78,29 +65,38 @@ function printQuestionMarks(num) {
       queryString += " WHERE ";
       queryString += condition;
   
-      console.log(queryString);
-      connection.query(queryString, function(err, result) {
-        if (err) {
-          throw err;
-        }
-  
-        cb(result);
-      });
+      orm.query(queryString, cb);
     },
+
+    value: function(table, columns, condition, cb) {
+        var queryString = "SELECT " 
+            + columns.join(", ") 
+            + " FROM " + table
+            + " WHERE "
+            + condition;
+
+        orm.query(queryString, cb);
+    },
+
     delete: function(table, condition, cb) {
-      var queryString = "DELETE FROM " + table;
-      queryString += " WHERE ";
-      queryString += condition;
-  
-      connection.query(queryString, function(err, result) {
-        if (err) {
-          throw err;
-        }
-  
-        cb(result);
-      });
+        var queryString = "DELETE FROM " + table;
+        queryString += " WHERE ";
+        queryString += condition;
+    
+        orm.query(queryString, cb);
+    },
+
+    query: function (queryString, callback) {
+        console.log(queryString);
+        connection.query(queryString, function(err, result) {
+            if (err) {
+                throw err;
+            }
+        
+            callback(result);
+        });
     }
-  };
+};
   
   // Export the orm object for the model (cat.js).
   module.exports = orm;

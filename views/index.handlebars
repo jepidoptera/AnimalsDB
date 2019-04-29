@@ -12,16 +12,17 @@
             {{#if extinct}}
                 <td style="color:red">extinct</td>
                 <td>
-                    <button>de-extinctify</button>
+                    <button class="conserveButton" data-name="{{species_name}}" data-id="{{id}}">de-extinctify</button>
                 </td>
             {{/if}}
             {{#unless extinct}}
                 <td>{{conservation_status}}</td>
                 <td>
-                    <button>conserve</button>
-                    <button>exploit</button>
+                    <button class="conserveButton" data-name="{{species_name}}" data-id="{{id}}">conserve</button>
+                    <button class="exploitButton" data-name="{{species_name}}" data-id="{{id}}">exploit</button>
                 </td>
             {{/unless}}
         </tr>
     {{/each}}
 </table>
+<script src="/assets/js/index.js"></script>
