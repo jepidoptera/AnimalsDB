@@ -1,25 +1,26 @@
 var orm = require("../config/orm.js");
 
 // animals model
-// possible conservation statuses
-var conservation_status = [
-    "least concern",
-    "near threatened",
-    "threatened",
-    "endangered",
-    "critically endangered",
-    "extinct in the wild",
-    "extinct"
-];
 
 function getConservationStatus (animalID, callback) {
     orm.value("animals", ["conservation_status"], "id=" + animalID, function(data) {
-        callback(conservation_status.indexOf(data[0].conservation_status));
+        callback(animals.conservation_status.indexOf(data[0].conservation_status));
     });
 }
 
 // species_name, description, conservation_status, createdAt, updatedAt
 var animals = {
+    // possible conservation statuses
+    conservation_status: [
+        "least concern",
+        "near threatened",
+        "threatened",
+        "endangered",
+        "critically endangered",
+        "extinct in the wild",
+        "extinct"
+    ],
+
     all: function(cb) {
         orm.all("animals", function(res) {
         cb(res);
@@ -35,10 +36,10 @@ var animals = {
             // if possible, decrease the animal's status
             var prevStatus = statusLevel;
             if (statusLevel > 0)
-                orm.update("animals", {conservation_status: conservation_status[-- statusLevel]}, "id=" + animalID, cb);
+                orm.update("animals", {conservation_status: animals.conservation_status[-- statusLevel]}, "id=" + animalID, cb);
 
             // log change
-            console.log("status: " + conservation_status[prevStatus] + " --> " + conservation_status[statusLevel]);
+            console.log("status: " + animals.conservation_status[prevStatus] + " --> " + animals.conservation_status[statusLevel]);
         });
     },
     exploit: function(animalID, cb) {
@@ -46,11 +47,11 @@ var animals = {
         getConservationStatus(animalID, function(statusLevel) {
             // increase the animal's status towards extinction
             var prevStatus = statusLevel;
-            if (statusLevel < conservation_status.length - 1)
-                orm.update("animals", {conservation_status: conservation_status[++ statusLevel]}, "id=" + animalID, cb);
+            if (statusLevel < animals.conservation_status.length - 1)
+                orm.update("animals", {conservation_status: animals.conservation_status[++ statusLevel]}, "id=" + animalID, cb);
 
             // log change
-            console.log("status: " + conservation_status[prevStatus] + " --> " + conservation_status[statusLevel]);
+            console.log("status: " + animals.conservation_status[prevStatus] + " --> " + animals.conservation_status[statusLevel]);
         });
     },
     update: function(objColVals, condition, cb) {
