@@ -11,7 +11,7 @@ var path = require("path");
 // routes
 
 // display all animals
-router.get("/index", function(req, res) {
+router.get("/", function(req, res) {
     console.log("get index");
     animals.all(function(data) {
         var colors = [
@@ -40,7 +40,8 @@ router.get("/api/new", function(req, res) {
         species_name: "unicorn",
         description: "a magical new creation",
         id: -1,
-        conservation_status: "extinct"
+        conservation_status: "extinct",
+        options: animals.conservation_status.map(option => {return {tag: option};});
     });
 });
 
@@ -74,7 +75,7 @@ router.post("/api/update/:animalID", function(req, res) {
     if (animalID >= 0) {
         // update animal
         animals.update(req.body, "id=" + animalID, function () {
-            res.redirect("/index");
+            res.redirect("/");
         });
     }
     else {
@@ -85,7 +86,7 @@ router.post("/api/update/:animalID", function(req, res) {
         // call "create"
         animals.create(cols, vals, function () {
             // send back to the home page
-            res.redirect("/index");
+            res.redirect("/");
         });
     }
 });
