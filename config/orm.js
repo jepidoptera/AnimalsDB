@@ -26,7 +26,8 @@ function printQuestionMarks(num) {
         var value = ob[key];
         // if string with spaces, add quotations (Lana Del Grey => 'Lana Del Grey')
         if (typeof value === "string") {
-            value = "'" + value + "'";
+            // add quotes at each end, and escape any apostrophes while we're at it
+            value = "'" + value.replace(/'/gi, "\\'") + "'";
         }
         // e.g. {name: 'Lana Del Grey'} => ["name='Lana Del Grey'"]
         // e.g. {sleepy: true} => ["sleepy=true"]
@@ -42,6 +43,11 @@ function printQuestionMarks(num) {
     all: function(tableInput, cb) {
       var queryString = "SELECT * FROM " + tableInput + ";";
       orm.query(queryString, cb);
+    },
+    
+    get: function(tableInput, id, cb) {
+        var queryString = "SELECT * FROM " + tableInput + " WHERE id=" + id;
+        orm.query(queryString, cb);
     },
 
     create: function(table, cols, vals, cb) {

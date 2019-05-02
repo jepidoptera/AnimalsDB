@@ -30,6 +30,9 @@ var animals = {
     create: function(cols, vals, cb) {
         orm.create("animals", cols, vals, cb);
     },
+    get: function(animalID, cb) {
+        orm.get("animals", animalID, cb);
+    },
     conserve: function(animalID, cb) {
         // check current conservation status
         getConservationStatus(animalID, function(statusLevel) {

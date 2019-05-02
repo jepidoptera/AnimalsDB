@@ -15,4 +15,8 @@ $(document).ready(function() {
             location.reload();
         });
     });
+    $(".editButton").on("click", function() {
+        console.log("edit: " + $(this).data('name'));
+        location.href = "/edit/" + $(this).data('id');
+    });
 });

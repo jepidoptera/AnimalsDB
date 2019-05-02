@@ -10,19 +10,23 @@
             <td>{{species_name}}</td>
             <td>{{description}}</td>
             <td style="color:{{color}}">{{conservation_status}}</td>
-            {{#if extinct}}
-                <td>
+            <td style="text-align:center">
+                {{!-- conserve/exploit or de-extinctify, depending --}}
+                {{#if extinct}}
                     <button class="conserveButton" data-name="{{species_name}}" data-id="{{id}}">de-extinctify</button>
-                </td>
-            {{/if}}
-            {{#unless extinct}}
-                <td style="text-align:center">
+                {{/if}}
+                {{#unless extinct}}
                     <button class="conserveButton" data-name="{{species_name}}" data-id="{{id}}">conserve</button>
                     <br>
                     <button class="exploitButton" data-name="{{species_name}}" data-id="{{id}}">exploit</button>
-                </td>
-            {{/unless}}
+                {{/unless}}
+                {{!-- edit button, always visible --}}
+                <br>
+                <button class="editButton" data-name="{{species_name}}" data-id="{{id}}">edit</button>
+            </td>
         </tr>
     {{/each}}
 </table>
 <script src="/assets/js/index.js"></script>
+
+<button id="engineerButton" onclick="location.href ='/api/new'">Engineer a new creature!</button>

@@ -10,7 +10,15 @@ app.use(bodyParser.json());
 // use handlebars
 var exphbs = require("express-handlebars");
 
-app.engine("handlebars", exphbs({ defaultLayout: "main" }));
+app.engine("handlebars", exphbs({ 
+    defaultLayout: "main",
+    // define helper function
+    helpers: {
+        isEqual: function (expectedValue, value) {
+            return value === expectedValue;
+        }
+    }
+}));
 app.set("view engine", "handlebars");
 app.use(express.static("public"));
 

@@ -5,3 +5,7 @@ table {
 th {
     cursor: pointer;
 }
+
+#engineerButton {
+    font-size: 32
+}

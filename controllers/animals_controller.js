@@ -1,14 +1,18 @@
+// jshint esversion: 6
 var animals = require("../models/animals");
 
 var express = require("express");
 
 var router = express.Router();
 
+var path = require("path");
+
 // =======================================
 // routes
 
 // display all animals
-router.get("/", function(req, res) {
+router.get("/index", function(req, res) {
+    console.log("get index");
     animals.all(function(data) {
         var colors = [
             "rgb(0,96,0)",
@@ -31,6 +35,26 @@ router.get("/", function(req, res) {
     });
 });
 
+router.get("/api/new", function(req, res) {
+    res.render("edit", {
+        species_name: "unicorn",
+        description: "a magical new creation",
+        id: -1,
+        conservation_status: "extinct"
+    });
+});
+
+router.get("/edit/:animalID", function(req, res) {
+    var animalID = req.params.animalID;
+    animals.get(animalID, function(data) {
+        var animal = data[0];
+        // set dropdown options as an array of objects for handlebars
+        animal.options = animals.conservation_status.map(option => {return {tag: option};});
+        console.log('edit request: ' + animal.species_name);
+        res.render("edit", animal);
+    });
+});
+
 router.post("/api/conserve/:animalID", function(req, res) {
     animals.conserve(req.params.animalID, function(data) {
         console.log(data);
@@ -43,6 +67,27 @@ router.post("/api/exploit/:animalID", function(req, res) {
         console.log(data);
         res.status(200).end();
     });
+});
+
+router.post("/api/update/:animalID", function(req, res) {
+    var animalID = req.params.animalID;
+    if (animalID >= 0) {
+        // update animal
+        animals.update(req.body, "id=" + animalID, function () {
+            res.redirect("/index");
+        });
+    }
+    else {
+        // new animal
+        // get cols and vals from req.body
+        var cols = Object.keys(req.body);
+        var vals = cols.map((col) => {return req.body[col];});
+        // call "create"
+        animals.create(cols, vals, function () {
+            // send back to the home page
+            res.redirect("/index");
+        });
+    }
 });
 
 module.exports = router;
