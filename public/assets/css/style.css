@@ -5,7 +5,11 @@ table {
 th {
     cursor: pointer;
 }
+td {
+    padding: 10px;
+}
 
 #engineerButton {
-    font-size: 32
+    font-size: 18pt;
+    border-radius: 3px;
 }

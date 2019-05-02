@@ -1,32 +1,64 @@
-<table border="1">
+<h1>The Great Lexicon of Imaginary Animals
+
+<button id="engineerButton" onclick="location.href ='/api/new'">
+Engineer a new creature!</button>
+
+</h1>
+
+<br>
+
+<h4>Living Creatures</h4>
+<table border="1" style="width:960px">
     <tr>
-        <th>Species</th>
-        <th>Description</th>
-        <th>Conservation Status</th>
+        <th style="width:150px">Species</th>
+        <th style="width:560px">Description</th>
+        <th style="width:120px">Conservation Status</th>
         <th>Actions:</th>
     </tr>
     {{#each animals}}
-        <tr>
-            <td>{{species_name}}</td>
-            <td>{{description}}</td>
-            <td style="color:{{color}}">{{conservation_status}}</td>
-            <td style="text-align:center">
-                {{!-- conserve/exploit or de-extinctify, depending --}}
-                {{#if extinct}}
-                    <button class="conserveButton" data-name="{{species_name}}" data-id="{{id}}">de-extinctify</button>
-                {{/if}}
-                {{#unless extinct}}
+        {{#unless extinct}}
+            <tr>
+                <td>{{species_name}}</td>
+                <td>{{description}}</td>
+                <td style="color:{{color}}">{{conservation_status}}</td>
+                <td style="text-align:center">
+                    {{!-- conserve/exploit buttons --}}
                     <button class="conserveButton" data-name="{{species_name}}" data-id="{{id}}">conserve</button>
                     <br>
                     <button class="exploitButton" data-name="{{species_name}}" data-id="{{id}}">exploit</button>
-                {{/unless}}
-                {{!-- edit button, always visible --}}
-                <br>
-                <button class="editButton" data-name="{{species_name}}" data-id="{{id}}">edit</button>
-            </td>
-        </tr>
+                    {{!-- edit button, always visible --}}
+                    <br>
+                    <button class="editButton" data-name="{{species_name}}" data-id="{{id}}">edit</button>
+                </td>
+            </tr>
+        {{/unless}}
+    {{/each}}
+</table>
+
+<h4>Extinct Creatures</h4>
+<table border="1" style="width:960px">
+    <tr>
+        <th style="width:150px">Species</th>
+        <th style="width:560px">Description</th>
+        <th style="width:120px">Conservation Status</th>
+        <th>Actions:</th>
+    </tr>
+    {{#each animals}}
+        {{#if extinct}}
+            <tr>
+                <td>{{species_name}}</td>
+                <td>{{description}}</td>
+                <td style="color:{{color}}">{{conservation_status}}</td>
+                <td style="text-align:center">
+                    {{!-- conserve/exploit or de-extinctify, depending --}}
+                    <button class="conserveButton" data-name="{{species_name}}" data-id="{{id}}">de-extinctify</button>
+                    {{!-- edit button, always visible --}}
+                    <br>
+                    <button class="editButton" data-name="{{species_name}}" data-id="{{id}}">edit</button>
+                </td>
+            </tr>
+        {{/if}}
     {{/each}}
 </table>
 <script src="/assets/js/index.js"></script>
 
-<button id="engineerButton" onclick="location.href ='/api/new'">Engineer a new creature!</button>

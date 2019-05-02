@@ -57,12 +57,12 @@ function printQuestionMarks(num) {
       queryString += cols.toString();
       queryString += ") ";
       queryString += "VALUES (";
-      queryString += printQuestionMarks(vals.length);
+      queryString += "'"+ vals.join("','") + "'";
       queryString += ") ";
   
       orm.query(queryString, cb);
     },
-    // An example of objColVals would be {name: panther, sleepy: true}
+
     update: function(table, objColVals, condition, cb) {
       var queryString = "UPDATE " + table;
   

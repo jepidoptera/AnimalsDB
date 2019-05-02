@@ -41,7 +41,7 @@ router.get("/api/new", function(req, res) {
         description: "a magical new creation",
         id: -1,
         conservation_status: "extinct",
-        options: animals.conservation_status.map(option => {return {tag: option};});
+        options: animals.conservation_status.map(option => {return {tag: option};})
     });
 });
 
@@ -83,12 +83,20 @@ router.post("/api/update/:animalID", function(req, res) {
         // get cols and vals from req.body
         var cols = Object.keys(req.body);
         var vals = cols.map((col) => {return req.body[col];});
+        console.log(vals);
         // call "create"
         animals.create(cols, vals, function () {
             // send back to the home page
             res.redirect("/");
         });
     }
+});
+
+router.delete("/api/delete/:animalID", function(req, res) {
+    // delete animal
+    animals.delete(req.params.animalID, function () {
+        res.redirect("/");
+    });
 });
 
 module.exports = router;

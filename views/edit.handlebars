@@ -15,17 +15,20 @@
                     {{#each options}}
                         <option value="{{tag}}" {{#if (isEqual tag ../this.conservation_status)}}selected{{/if}}>{{tag}}</option>
                     {{/each}}
-                    {{!-- <option value="extinct">extinct</option>
-                    <option value="extinct in the wild">extinct in the wild</option>
-                    <option value="critically endangered">critically endangered</option>
-                    <option value="endangered" {{#if (isEqual "endangered" conservation_status)}}selected{{/if}}>endangered</option>
-                    <option value="threatened">threatened</option>
-                    <option value="near threatened">near threatened</option>
-                    <option value="least concern">least concern</option> --}}
                 </select>    
             </td>
             <td>
-                <button action="submit">Ok</button>
+                <button action="submit">Update</button>
+                {{#unless (isEqual id -1)}}
+                <button onclick=
+                    "if (confirm('Are you sure about that? There is no undo button.')) {
+                        $.ajax({
+                            method: 'DELETE',
+                            url: '/api/delete/{{id}}'
+                        });
+                    }"
+                    method="DELETE">Delete</button>
+                {{/unless}}
                 <button onclick="location.href='/index'">Cancel</button>
             </td>
         </tr>
